@@ -49,3 +49,15 @@ def test_instantiate_from_csv(csv_file):
 def test_is_integer():
     assert Item.is_integer(5) == True
     assert Item.is_integer(5.5) == False
+
+
+def test_str():
+    assert item1.__str__() == "Смартфон"
+    assert item2.__str__() == "Ноутбук"
+    assert item3.__str__() == "Квадрокоптер"
+
+
+def test_repr():
+    assert item1.__repr__() == "Item(Смартфон, 10000, 20)"
+    assert item2.__repr__() == "Item(Ноутбук, 20000, 5)"
+    assert item3.__repr__() == "Item(Квадрокоптер, 25000, 1)"
