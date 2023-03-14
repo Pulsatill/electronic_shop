@@ -55,3 +55,9 @@ class Item:
             return value.is_integer()
         else:
             return False
+
+    def __repr__(self) -> str:
+        return f"Item({self._name}, {self.price}, {self.amount})"
+
+    def __str__(self) -> str:
+        return f"{self._name}"
