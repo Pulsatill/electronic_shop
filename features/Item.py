@@ -8,7 +8,10 @@ class Item:
     csv_file = os.path.join("items.csv")
 
     def __init__(self, name, price, amount, pay_rate=1):
-        self._name = name
+        if 0 < len(name) <= 10:
+            self._name = name
+        else:
+            raise AttributeError("Длина наименования товара превышает 10 символов.")
         self.price = price
         self.amount = amount
         self.total = None
@@ -24,7 +27,7 @@ class Item:
         if 0 < len(name) <= 10:
             self._name = name
         else:
-            raise ValueError("Длина наименования товара превышает 10 символов.")
+            raise AttributeError("Длина наименования товара превышает 10 символов.")
 
     def calculate_total_price(self):
         self.total = self.price * self.amount
@@ -61,3 +64,30 @@ class Item:
 
     def __str__(self) -> str:
         return f"{self._name}"
+
+
+class Phone(Item):
+
+    def __init__(self, name, price, amount, number_of_sim):
+        super().__init__(name, price, amount)
+        if 0 < number_of_sim:
+            self._number_of_sim = number_of_sim
+        else:
+            raise AttributeError("Количество физических SIM-карт должно быть целым числом больше нуля.")
+
+    def __add__(self, other):
+        return self.amount + other.amount
+
+    @property
+    def number_of_sim(self):
+        return self._number_of_sim
+
+    @number_of_sim.setter
+    def number_of_sim(self, number_of_sim):
+        if 0 < number_of_sim:
+            self._number_of_sim = number_of_sim
+        else:
+            raise AttributeError("Количество физических SIM-карт должно быть целым числом больше нуля.")
+
+    def __repr__(self) -> str:
+        return f"Phone({self._name}, {self.price}, {self.amount}, {self._number_of_sim})"
