@@ -37,10 +37,10 @@ def test_instantiate_from_csv(csv_file):
     item5 = Item.all[1]
     item6 = Item.all[2]
 
-    assert len(Item.all) == 5
-    assert item4.name == "СУПЕРСмартфон"
-    assert item5.price == "E0000"
-    assert item6.amount == "6.7"
+    assert len(Item.all) == 4
+    assert item4.name == "Ноутбук"
+    assert item5.price == "10"
+    assert item6.amount == "5"
     # assert Item.is_integer(item4.price) == True # здесь тест фейлится,
     #    непонятно почему, хотя пишет что проверяет число 100
     assert Item.is_integer(item5.price) == False

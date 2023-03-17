@@ -43,10 +43,13 @@ class Item:
             all2 = []
             file_read = csv.DictReader(f)
             for i in file_read:
-                name = i["name"]
-                price = i["price"]
-                amount = i["quantity"]
-                all2.append(cls(name, price, amount))
+                if 0 < len(i["name"]) <= 10:
+                    name = i["name"]
+                    price = i["price"]
+                    amount = i["quantity"]
+                    all2.append(cls(name, price, amount))
+                else:
+                    continue
             cls.all = all2
             return cls.all
 
@@ -76,6 +79,8 @@ class Phone(Item):
             raise AttributeError("Количество физических SIM-карт должно быть целым числом больше нуля.")
 
     def __add__(self, other):
+        if not isinstance(other, Item):
+            raise AttributeError("Экземпляры класса должны быть из класса Item и/или наследуемыми от Item")
         return self.amount + other.amount
 
     @property
