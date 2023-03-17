@@ -4,7 +4,6 @@ from features.Item import Item
 
 item1 = Item('Смартфон', 10000, 20, pay_rate=0.8)
 item2 = Item("Ноутбук", 20000, 5)
-item3 = Item("Квадрокоптер", 25000, 1)
 pay_rate = 0.8
 
 
@@ -13,6 +12,15 @@ def csv_file():
     csv_file = os.path.join("test.csv")
     return csv_file
 
+
+def test_str():
+    assert item1.__str__() == "Смартфон"
+    assert item2.__str__() == "Ноутбук"
+
+
+def test_repr():
+    assert item1.__repr__() == "Item(Смартфон, 10000, 20)"
+    assert item2.__repr__() == "Item(Ноутбук, 20000, 5)"
 
 def test_calculate_total_price():
     assert item1.calculate_total_price() == 200000
@@ -25,9 +33,11 @@ def test_apply_discount():
 
 
 def test_name():
-    with pytest.raises(Exception):
-        assert item3.name == "Длина названия товара больше 10 символов"
-    assert item2.name == "kj"
+    with pytest.raises(AttributeError):
+        Item("Квадрокоптер", 25000, 1)
+    with pytest.raises(AttributeError):
+        item2.name = "Квадрокоптер"
+    assert item2.name == "Ноутбук"
 
 
 def test_instantiate_from_csv(csv_file):
@@ -36,10 +46,10 @@ def test_instantiate_from_csv(csv_file):
     item5 = Item.all[1]
     item6 = Item.all[2]
 
-    assert len(Item.all) == 5
-    assert item4.name == "СУПЕРСмартфон"
-    assert item5.price == "E0000"
-    assert item6.amount == "6.7"
+    assert len(Item.all) == 4
+    assert item4.name == "Ноутбук"
+    assert item5.price == "10"
+    assert item6.amount == "5"
     # assert Item.is_integer(item4.price) == True # здесь тест фейлится,
     #    непонятно почему, хотя пишет что проверяет число 100
     assert Item.is_integer(item5.price) == False
@@ -49,15 +59,3 @@ def test_instantiate_from_csv(csv_file):
 def test_is_integer():
     assert Item.is_integer(5) == True
     assert Item.is_integer(5.5) == False
-
-
-def test_str():
-    assert item1.__str__() == "Смартфон"
-    assert item2.__str__() == "Ноутбук"
-    assert item3.__str__() == "Квадрокоптер"
-
-
-def test_repr():
-    assert item1.__repr__() == "Item(Смартфон, 10000, 20)"
-    assert item2.__repr__() == "Item(Ноутбук, 20000, 5)"
-    assert item3.__repr__() == "Item(Квадрокоптер, 25000, 1)"
