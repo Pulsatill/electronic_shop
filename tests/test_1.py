@@ -13,6 +13,15 @@ def csv_file():
     return csv_file
 
 
+def test_str():
+    assert item1.__str__() == "Смартфон"
+    assert item2.__str__() == "Ноутбук"
+
+
+def test_repr():
+    assert item1.__repr__() == "Item(Смартфон, 10000, 20)"
+    assert item2.__repr__() == "Item(Ноутбук, 20000, 5)"
+
 def test_calculate_total_price():
     assert item1.calculate_total_price() == 200000
     assert item2.calculate_total_price() == 100000
@@ -50,13 +59,3 @@ def test_instantiate_from_csv(csv_file):
 def test_is_integer():
     assert Item.is_integer(5) == True
     assert Item.is_integer(5.5) == False
-
-
-def test_str():
-    assert item1.__str__() == "Смартфон"
-    assert item2.__str__() == "Ноутбук"
-
-
-def test_repr():
-    assert item1.__repr__() == "Item(Смартфон, 10000, 20)"
-    assert item2.__repr__() == "Item(Ноутбук, 20000, 5)"
