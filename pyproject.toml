@@ -9,6 +9,7 @@ packages = [{include = "electronic_shop"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 pytest = "^7.2.1"
+coverage = "^7.2.2"
 
 
 [build-system]

@@ -22,6 +22,7 @@ def test_repr():
     assert item1.__repr__() == "Item(Смартфон, 10000, 20)"
     assert item2.__repr__() == "Item(Ноутбук, 20000, 5)"
 
+
 def test_calculate_total_price():
     assert item1.calculate_total_price() == 200000
     assert item2.calculate_total_price() == 100000
@@ -34,9 +35,9 @@ def test_apply_discount():
 
 def test_name():
     with pytest.raises(AttributeError):
-        Item("Квадрокоптер", 25000, 1)
+        Item("Квадрокоптер 15000 V800", 25000, 1)
     with pytest.raises(AttributeError):
-        item2.name = "Квадрокоптер"
+        item2.name = "Квадрокоптер 15000 V800"
     assert item2.name == "Ноутбук"
 
 
@@ -50,9 +51,11 @@ def test_instantiate_from_csv(csv_file):
     assert item4.name == "Ноутбук"
     assert item5.price == "10"
     assert item6.amount == "5"
-    # assert Item.is_integer(item4.price) == True # здесь тест фейлится,
-    #    непонятно почему, хотя пишет что проверяет число 100
-    assert Item.is_integer(item5.price) == False
+    item4.price = 5.6
+    item5.price = 1000
+    item6.amount = 6.1
+    assert Item.is_integer(item4.price) == False
+    assert Item.is_integer(item5.price) == True
     assert Item.is_integer(item6.amount) == False
 
 

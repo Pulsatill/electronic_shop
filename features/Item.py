@@ -8,10 +8,10 @@ class Item:
     csv_file = os.path.join("items.csv")
 
     def __init__(self, name, price, amount, pay_rate=1):
-        if 0 < len(name) <= 10:
+        if 0 < len(name) <= 20:
             self._name = name
         else:
-            raise AttributeError("Длина наименования товара превышает 10 символов.")
+            raise AttributeError("Длина наименования товара превышает 20 символов.")
         self.price = price
         self.amount = amount
         self.total = None
@@ -24,10 +24,10 @@ class Item:
 
     @name.setter
     def name(self, name):
-        if 0 < len(name) <= 10:
+        if 0 < len(name) <= 20:
             self._name = name
         else:
-            raise AttributeError("Длина наименования товара превышает 10 символов.")
+            raise AttributeError("Длина наименования товара превышает 20 символов.")
 
     def calculate_total_price(self):
         self.total = self.price * self.amount
@@ -43,7 +43,7 @@ class Item:
             all2 = []
             file_read = csv.DictReader(f)
             for i in file_read:
-                if 0 < len(i["name"]) <= 10:
+                if 0 < len(i["name"]) <= 20:
                     name = i["name"]
                     price = i["price"]
                     amount = i["quantity"]
@@ -96,3 +96,27 @@ class Phone(Item):
 
     def __repr__(self) -> str:
         return f"Phone({self._name}, {self.price}, {self.amount}, {self._number_of_sim})"
+
+
+class LanguageMixin:
+
+    def __init__(self, *args, **kwargs):
+        self.__language = "EN"
+        super().__init__(*args, **kwargs)
+
+    def change_lang(self):
+        if self.__language == "EN":
+            self.__language = "RU"
+        elif self.__language == "RU":
+            self.__language = "EN"
+        return self.__language
+
+    @property
+    def language(self):
+        return self.__language
+
+
+class KeyBoard(LanguageMixin, Item):
+
+    def __str__(self):
+        return f"{self.name}, {self.price}, {self.amount}"
