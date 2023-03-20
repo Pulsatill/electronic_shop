@@ -1,11 +1,15 @@
 import csv
 import os.path
 
+from features.InstantiateCSVError import InstantiateCSVError
+
+
+csv_file = os.path.join("items.csv")
+
 
 class Item:
     pay_rate = 1
     all = []
-    csv_file = os.path.join("items.csv")
 
     def __init__(self, name, price, amount, pay_rate=1):
         if 0 < len(name) <= 20:
@@ -39,19 +43,26 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls, csv_file):
-        with open(csv_file, "r") as f:
-            all2 = []
-            file_read = csv.DictReader(f)
-            for i in file_read:
-                if 0 < len(i["name"]) <= 20:
-                    name = i["name"]
-                    price = i["price"]
-                    amount = i["quantity"]
-                    all2.append(cls(name, price, amount))
+        try:
+            with open(csv_file, "r") as f:
+                file_read = csv.DictReader(f)
+                cols = len(next(file_read))
+                print(cols)
+                if cols == 3:
+                    all2 = []
+                    for i in file_read:
+                        if 0 < len(i["name"]) <= 20:
+                            name = i["name"]
+                            price = i["price"]
+                            amount = i["quantity"]
+                            all2.append(cls(name, price, amount))
+
+                    cls.all = all2
+                    return cls.all
                 else:
-                    continue
-            cls.all = all2
-            return cls.all
+                    raise InstantiateCSVError
+        except FileNotFoundError:
+            raise FileNotFoundError("Отсутствует файл item.csv")
 
     @staticmethod
     def is_integer(value):
@@ -100,23 +111,32 @@ class Phone(Item):
 
 class LanguageMixin:
 
-    def __init__(self, *args, **kwargs):
-        self.__language = "EN"
-        super().__init__(*args, **kwargs)
-
-    def change_lang(self):
-        if self.__language == "EN":
+    def languages(self):
+        if self.language == "EN":
             self.__language = "RU"
-        elif self.__language == "RU":
+        elif self.language == "RU":
             self.__language = "EN"
-        return self.__language
-
-    @property
-    def language(self):
         return self.__language
 
 
 class KeyBoard(LanguageMixin, Item):
 
+    def __init__(self, *args, **kwargs):
+        self.__language = "EN"
+        super().__init__(*args, **kwargs)
+
+    def change_lang(self):
+        self.__language = self.languages()
+        return self.__language
+
     def __str__(self):
         return f"{self.name}, {self.price}, {self.amount}"
+
+    @property
+    def language(self):
+        return self.__language
+
+    @language.setter
+    def language(self):
+        return self.__language
+
