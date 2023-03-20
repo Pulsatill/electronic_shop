@@ -1,6 +1,7 @@
 import pytest
 import os
 from features.Item import Item
+from features.InstantiateCSVError import InstantiateCSVError
 
 item1 = Item('Смартфон', 10000, 20, pay_rate=0.8)
 item2 = Item("Ноутбук", 20000, 5)
@@ -11,6 +12,18 @@ pay_rate = 0.8
 def csv_file():
     csv_file = os.path.join("test.csv")
     return csv_file
+
+
+@pytest.fixture
+def csv2():
+    csv2 = os.path.join("test2.csv")
+    return csv2
+
+
+@pytest.fixture
+def csv3():
+    csv3 = os.path.join("tes.csv")
+    return csv3
 
 
 def test_str():
@@ -57,6 +70,16 @@ def test_instantiate_from_csv(csv_file):
     assert Item.is_integer(item4.price) == False
     assert Item.is_integer(item5.price) == True
     assert Item.is_integer(item6.amount) == False
+
+
+def test_instantiate_from_csv2(csv2):
+    with pytest.raises(InstantiateCSVError):
+        assert Item.instantiate_from_csv(csv2)
+
+
+def test_instantiate_from_csv3(csv3):
+    with pytest.raises(FileNotFoundError):
+        assert Item.instantiate_from_csv(csv3)
 
 
 def test_is_integer():
