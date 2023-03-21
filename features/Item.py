@@ -110,33 +110,26 @@ class Phone(Item):
 
 
 class LanguageMixin:
+    _supported_languages: tuple[str, ...] = ('RU', 'EN')
 
     def languages(self):
-        if self.language == "EN":
-            self.__language = "RU"
-        elif self.language == "RU":
-            self.__language = "EN"
+        current_language_index: int = self._supported_languages.index(self.language)
+        next_language_index = (current_language_index + 1) % len(self._supported_languages)
+        self.language = self._supported_languages[next_language_index]
+
+    @property
+    def language(self) -> str:
         return self.__language
+
+    @language.setter
+    def language(self, value: str) -> None:
+        if value not in self._supported_languages:
+            raise ValueError
+        self.__language = value
 
 
 class KeyBoard(LanguageMixin, Item):
 
     def __init__(self, *args, **kwargs):
-        self.__language = "EN"
         super().__init__(*args, **kwargs)
-
-    def change_lang(self):
-        self.__language = self.languages()
-        return self.__language
-
-    def __str__(self):
-        return f"{self.name}, {self.price}, {self.amount}"
-
-    @property
-    def language(self):
-        return self.__language
-
-    @language.setter
-    def language(self):
-        return self.__language
-
+        self.__language = "EN"
