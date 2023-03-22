@@ -6,10 +6,11 @@ import os
 class InstantiateCSVError(Exception):
 
     """
-    Выбрасывает исключение, если файл items.csv повреждён
+    Выбрасывает исключение, если файл csv повреждён
     Атрибуты класса:
     msg - сообщение об ошибке
     """
-    def __init__(self):
-        self.msg = "InstantiateCSVError: Файл item.csv поврежден"
+    def __init__(self, file):
+        self.file = file
+        self.msg = f"InstantiateCSVError: Файл {file} поврежден"
         super().__init__(self.msg)

@@ -47,7 +47,6 @@ class Item:
             with open(csv_file, "r") as f:
                 file_read = csv.DictReader(f)
                 cols = len(next(file_read))
-                print(cols)
                 if cols == 3:
                     all2 = []
                     for i in file_read:
@@ -60,9 +59,9 @@ class Item:
                     cls.all = all2
                     return cls.all
                 else:
-                    raise InstantiateCSVError
+                    raise InstantiateCSVError(csv_file)
         except FileNotFoundError:
-            raise FileNotFoundError("Отсутствует файл item.csv")
+            raise FileNotFoundError(f"Отсутствует файл {csv_file}")
 
     @staticmethod
     def is_integer(value):
